@@ -1,0 +1,42 @@
+<Project>
+  <Import Project="Environment.props" />
+
+  <PropertyGroup>
+
+    <Windows10SDKVersion>10.0.22000.0</Windows10SDKVersion>
+    <Windows10MinSDKVersionTrimmed>10.0.22621</Windows10MinSDKVersionTrimmed>
+    <Windows10MinSDKVersion>$(Windows10MinSDKVersionTrimmed).0</Windows10MinSDKVersion>
+
+    <NetCore>net8.0</NetCore>
+    <NetCoreWindows10>$(NetCore)-windows$(Windows10MinSDKVersionTrimmed)</NetCoreWindows10>
+    <NetCoreWindows>$(NetCore)-windows</NetCoreWindows>
+    <NetMacCatalyst>$(NetCore)-maccatalyst</NetMacCatalyst>
+    <NetMacOS>$(NetCore)-macos</NetMacOS>
+
+    <!-- Define default build configuration -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <UseAppHost Condition="$(IsMac)">False</UseAppHost>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- Defines the bin and obj folder paths -->
+    <RepoRoot>$([System.IO.Path]::GetDirectoryName($([MSBuild]::GetPathOfFileAbove('.gitignore', '$(MSBuildThisFileDirectory)'))))\</RepoRoot>
+    <BaseOutputPath>$(RepoRoot)bin\$(Configuration)\$(Platform)\</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(MSBuildProjectName)\</OutputPath>
+    <BaseIntermediateOutputPath>$(RepoRoot)obj\$(Platform)\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)</IntermediateOutputPath>
+    <PackageOutputPath>$(OutputPath)</PackageOutputPath>
+    <PluginNupkgPath>$(RepoRoot)bin\$(Configuration)\Plugins</PluginNupkgPath>
+    <GeneratedFilesDir>$(BaseIntermediateOutputPath)Generated Files\</GeneratedFilesDir>
+    <PackagesConfigRestorePath>$(RepoRoot)packages\</PackagesConfigRestorePath>
+
+    <!-- Enable Central Package Management -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <EnablePackageVersionOverride>false</EnablePackageVersionOverride>
+
+    <!-- Keep generated code in `obj` folder -->
+    <EmitCompilerGeneratedFiles>True</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+
+</Project>
